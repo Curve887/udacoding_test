@@ -6,6 +6,8 @@ import 'package:udacoding_test/widget/textfield/texfield_email_widget.dart';
 import 'package:udacoding_test/widget/textfield/textfield.pass.widget.dart';
 import 'package:udacoding_test/widget/textfield/textfield_nama_widget.dart';
 import 'package:udacoding_test/widget/textfield/textfield_idlibrary_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udacoding_test/screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +21,20 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController idLibrary = TextEditingController();
+
+  Future<void> _checkSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final sessionId = prefs.getString('session_id');
+    if (sessionId != null) {
+      // Navigate to HomeScreen if session ID is found
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(height: 15),
                               TextfieldNamaWidget(controller: name),
                               const SizedBox(height: 15),
-                              TextfieldIDLibraryWidget(controller: idLibrary),
-                              const SizedBox(height: 15),
                               TexfieldEmailWidget(controller: email),
                               const SizedBox(height: 15),
                             ],
@@ -93,7 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  loadAuth.submit();
+                                  if (loadAuth.islogin) {
+                                    loadAuth.login(context);
+                                  } else {
+                                    loadAuth.submit(context);
+                                  }
                                 },
                                 child: Text(
                                     loadAuth.islogin ? "Login" : "Register"),

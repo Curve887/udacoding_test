@@ -36,8 +36,7 @@ class PostResult {
     required String password,
     required String levelId,
   }) async {
-    const String apiUrl =
-        "http://192.168.65.111/api_library/index.php"; 
+    const String apiUrl = "http://localhost/api/index.php";
 
     try {
       final response = await http.post(

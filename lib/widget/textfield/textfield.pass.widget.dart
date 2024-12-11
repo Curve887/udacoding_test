@@ -33,8 +33,8 @@ class _TexfieldPasswordWidgetState extends State<TexfieldPasswordWidget> {
             // Tambahkan 'validator' di sini
             if (value!.trim().isEmpty || value == "") {
               return "Password can't be empty";
-            } else if (value.trim().length < 6) {
-              return "Password should more than 6 character";
+            } else if (value.trim().length < 8) {
+              return "Password should more than 8 character";
             }
             return null;
           },
